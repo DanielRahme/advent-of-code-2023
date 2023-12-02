@@ -37,5 +37,5 @@ add_executable(${TargetName} src/hello.cpp)
 target_link_libraries(${TargetName} PUBLIC ${Lib})
 target_link_options(${TargetName} PUBLIC -Wl,--gc-sections)
 
+add_subdirectory(src)
 
-add_executable(day_01 src/day_01.cpp)
