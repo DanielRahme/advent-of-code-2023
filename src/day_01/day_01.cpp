@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <fstream>
 #include <string>
 #include <string_view>
@@ -17,22 +18,38 @@ int parse_number_from_string(const std::string_view& line)
     if (number.empty()) return 0;
     std::string two_digit{number.front()};
 
-    two_digit += number.size() > 1 
-                ? number.back() 
-                : number.front();
+int calculate(std::ifstream& fs)
+{
+    int res_1{};
 
     return std::stoi(two_digit);
 }
 
-int part1(std::ifstream& fs)
-{
-    int sum = 0;
     while (fs.good()) {
         std::string line{};
         fs >> line;
-        sum += parse_number_from_string(line);
+
+        auto first_digit = std::find_if(line.begin(), line.end(), 
+                                        [](char character){ 
+                                            return std::isdigit(character); 
+                                        });
+        if (first_digit == std::end(line)) continue;
+
+        auto last_digit = std::find_if(line.rbegin(), line.rend(), 
+                                       [](char character){ 
+                                            return std::isdigit(character); 
+                                       });
+
+        std::string result{*first_digit};
+        result += *last_digit;
+        res_1 += std::stoi(result);
+
+        // Part 2
+        //
+        find_words(line);
     }
-    return sum;
+
+    return res_1;
 }
 
 int main()
@@ -44,6 +61,6 @@ int main()
     std::ifstream fs(inputfile);
     if (!fs.is_open()) std::cout << "failed to open " << inputfile << '\n';
 
-    auto result_1 = part1(fs);
+    int result_1 = calculate(fs);
     std::cout << "Part 1: " << result_1 << '\n';
 }
