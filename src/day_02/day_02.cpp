@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <unordered_map>
+#include <ranges>
 
 void adv_tokenizer(std::string s, char del)
 {
@@ -32,9 +33,14 @@ int main()
     while(getline(fs, line)){ //read data from file object and put it into string.
         //std::cout << line << "\n"; //print the data of the string
         //
-        adv_tokenizer(line, ';');
+        //adv_tokenizer(line, ';');
         std::cout << '\n';
+        auto strings = line | std::views::split(';');
+        for (const auto &ref : strings) {
+            // C++ 20
+            std::cout << '\n' << std::string_view{ref.begin(), ref.end()};
+            // C++ 23
+            //std::cout << '\n' << std::string_view{ref};
+        }
     }
-
-
 }
